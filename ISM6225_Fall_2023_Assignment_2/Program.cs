@@ -1,5 +1,5 @@
 ﻿/* 
- 
+
 YOU ARE NOT ALLOWED TO MODIFY ANY FUNCTION DEFINATION's PROVIDED.
 WRITE YOUR CODE IN THE RESPECTIVE QUESTION FUNCTION BLOCK
 
@@ -112,8 +112,44 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                List<IList<int>> result = new List<IList<int>>();
+                long start = lower; // Use long to avoid integer overflow
+
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    if (nums[i] == start)
+                    {
+                        start++;
+                    }
+                    else if (nums[i] > start)
+                    {
+                        long end = nums[i] - 1;
+                        if (start == end)
+                        {
+                            result.Add(new List<int> { (int)start });
+                        }
+                        else
+                        {
+                            result.Add(new List<int> { (int)start, (int)end });
+                        }
+                        start = nums[i] + 1;
+                    }
+                }
+
+                if (start <= upper)
+                {
+                    if (start == upper)
+                    {
+                        result.Add(new List<int> { (int)start });
+                    }
+                    else
+                    {
+                        result.Add(new List<int> { (int)start, upper });
+                    }
+                }
+
+                return result;
+
             }
             catch (Exception)
             {
@@ -156,8 +192,31 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return s.Length == 0;
+                Stack<char> stack = new Stack<char>();
+
+                foreach (char c in s)
+                {
+                    if (c == '(' || c == '{' || c == '[')
+                    {
+                        stack.Push(c);
+                    }
+                    else if (c == ')' && (stack.Count == 0 || stack.Pop() != '('))
+                    {
+                        return false;
+                    }
+                    else if (c == '}' && (stack.Count == 0 || stack.Pop() != '{'))
+                    {
+                        return false;
+                    }
+                    else if (c == ']' && (stack.Count == 0 || stack.Pop() != '['))
+                    {
+                        return false;
+                    }
+                }
+
+                return stack.Count == 0;
+
+
             }
             catch (Exception)
             {
@@ -191,8 +250,22 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 1;
+                int maxProfit = 0;
+                int minPrice = int.MaxValue;
+
+                for (int i = 0; i < prices.Length; i++)
+                {
+                    if (prices[i] < minPrice)
+                    {
+                        minPrice = prices[i];
+                    }
+                    else if (prices[i] - minPrice > maxProfit)
+                    {
+                        maxProfit = prices[i] - minPrice;
+                    }
+                }
+
+                return maxProfit;
             }
             catch (Exception)
             {
@@ -229,8 +302,33 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return false;
+
+                Dictionary<char, char> strobogrammatic = new Dictionary<char, char>
+    {
+        { '0', '0' },
+        { '1', '1' },
+        { '6', '9' },
+        { '8', '8' },
+        { '9', '6' }
+    };
+
+                int left = 0;
+                int right = s.Length - 1;
+
+                while (left <= right)
+                {
+                    if (!strobogrammatic.ContainsKey(s[left]) || s[right] != strobogrammatic[s[left]])
+                            { 
+        
+                        return false;
+                    }
+
+                    left++;
+                    right--;
+                }
+
+                return true;
+            
             }
             catch (Exception)
             {
@@ -271,8 +369,24 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                Dictionary<int, int> count = new Dictionary<int, int>();
+                int result = 0;
+
+                foreach (int num in nums)
+                {
+                    if (count.ContainsKey(num))
+                    {
+                        result += count[num];
+                        count[num]++;
+                    }
+                    else
+                    {
+                        count[num] = 1;
+                    }
+                }
+
+                return result;
+
             }
             catch (Exception)
             {
@@ -321,8 +435,37 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                long max1 = long.MinValue;
+                long max2 = long.MinValue;
+                long max3 = long.MinValue;
+
+                foreach (int num in nums)
+                {
+                    if (num > max1)
+                    {
+                        max3 = max2;
+                        max2 = max1;
+                        max1 = num;
+                    }
+                    else if (num < max1 && num > max2)
+                    {
+                        max3 = max2;
+                        max2 = num;
+                    }
+                    else if (num < max2 && num > max3)
+                    {
+                        max3 = num;
+                    }
+                }
+
+                if (max3 != long.MinValue)
+                {
+                    return (int)max3;
+                }
+                else
+                {
+                    return (int)max1;
+                }
             }
             catch (Exception)
             {
@@ -354,8 +497,21 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<string>() { };
+                List<string> nextMoves = new List<string>();
+
+                for (int i = 0; i < currentState.Length - 1; i++)
+                {
+                    if (currentState[i] == '+' && currentState[i + 1] == '+')
+                    {
+                        char[] nextMove = currentState.ToCharArray();
+                        nextMove[i] = '-';
+                        nextMove[i + 1] = '-';
+                        nextMoves.Add(new string(nextMove));
+                    }
+                }
+
+                return nextMoves;
+
             }
             catch (Exception)
             {
@@ -383,8 +539,17 @@ namespace ISM6225_Fall_2023_Assignment_2
 
         public static string RemoveVowels(string s)
         {
-            // Write your code here and you can modify the return value according to the requirements
-            return "";
+            StringBuilder result = new StringBuilder();
+            foreach (char c in s)
+            {
+                if (c != 'a' && c != 'e' && c != 'i' && c != 'o' && c != 'u' &&
+                    c != 'A' && c != 'E' && c != 'I' && c != 'O' && c != 'U')
+                {
+                    result.Append(c);
+                }
+            }
+
+            return result.ToString();
         }
 
         /* Inbuilt Functions - Don't Change the below functions */
